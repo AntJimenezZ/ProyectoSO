@@ -1,4 +1,4 @@
-from flask import Flask, Response, request, abort
+from flask import Flask, Response, request, abort, jsonify
 from flask_cors import CORS  # Importar CORS
 import os
 
@@ -55,8 +55,13 @@ def stream_file_with_range(file_path):
 
 @app.route('/sendVideo')
 def song():
-    file_path = "./videos/Jhay Cortez, Anuel AA, J. Balvin - Medusa (Official Video).mp4"
-    return stream_file_with_range(file_path)
+    video_name = request.args.get('name')
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(base_dir, 'videos', f"{video_name}")
+    if not os.path.exists(file_path):
+        abort(404, "File not found")
+    else:
+        return stream_file_with_range(file_path)
 
 @app.route('/allVideos')
 def get_all_files():
@@ -69,7 +74,7 @@ def get_all_files():
 @app.route('/allSongs')
 def get_all_songs():
     files = []
-    for file in os.listdir('./songs'):
+    for file in os.listdir('./videos'):
         if file.endswith('.mp3'):
             files.append(file)
     return files
