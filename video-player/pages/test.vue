@@ -1,20 +1,20 @@
 <script lang="ts" setup>
 
 
-const videos = ref<Media[]>([]); // Usar ref para que Vue detecte los cambios reactivos
+const people = ref<Media[]>([]); // Usar ref para que Vue detecte los cambios reactivos
 
 const getAllVideos = async () => {
   try {
 
     //ADD USE FETCH
-    const response = await fetch('http://localhost:8080/allVideos');
+    const response = await  fetch('http://localhost:8080/allVideos');
     const data: string[] = await response.json();
     console.log(data);
 
     let id = 0;
-    videos.value = data.map((label: string) => ({ id: id++, label })); 
+    people.value = data.map((label: string) => ({ id: id++, label })); 
 
-    console.log("People data:", videos.value);
+    console.log("People data:", people.value);
   } catch (error) {
     console.error(error);
   }
@@ -42,8 +42,7 @@ interface Media {
   label: string;
 }
 
-const selected = ref<Media[]>([videos.value[0]]); 
-
+const selected = ref<Media[]>([people.value[0]]); 
 
 
 </script>
@@ -51,7 +50,7 @@ const selected = ref<Media[]>([videos.value[0]]);
 <template>
   <div class="container mt-4">
     <div class="relative inline-block select-container">
-      <UCommandPalette v-model="selected" nullable :autoselect="false" :groups="[{ key: 'people', commands: videos }]"
+      <UCommandPalette v-model="selected" nullable :autoselect="false" :groups="[{ key: 'people', commands: people }]"
         :fuse="{ resultLimit: 6, fuseOptions: { threshold: 0.1 } }" class="w-72 h-96" />
     </div>
     <div class="flex-grow flex justify-center">
