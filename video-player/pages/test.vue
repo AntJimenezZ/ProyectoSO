@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 
 
-const people = ref<Media[]>([]); // Usar ref para que Vue detecte los cambios reactivos
+const people = ref<Media[]>([]);
 
 const getAllVideos = async () => {
   try {
