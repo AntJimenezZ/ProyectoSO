@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 
 
-const people = ref<Media[]>([]); // Usar ref para que Vue detecte los cambios reactivos
+const videos = ref<Media[]>([]); // Usar ref para que Vue detecte los cambios reactivos
 
 const getAllVideos = async () => {
   try {
@@ -12,9 +12,9 @@ const getAllVideos = async () => {
     console.log(data);
 
     let id = 0;
-    people.value = data.map((label: string) => ({ id: id++, label })); // Asignar la lista a la ref
+    videos.value = data.map((label: string) => ({ id: id++, label })); 
 
-    console.log("People data:", people.value);
+    console.log("People data:", videos.value);
   } catch (error) {
     console.error(error);
   }
@@ -42,7 +42,7 @@ interface Media {
   label: string;
 }
 
-const selected = ref<Media[]>([people.value[0]]); 
+const selected = ref<Media[]>([videos.value[0]]); 
 
 
 
@@ -51,7 +51,7 @@ const selected = ref<Media[]>([people.value[0]]);
 <template>
   <div class="container mt-4">
     <div class="relative inline-block select-container">
-      <UCommandPalette v-model="selected" nullable :autoselect="false" :groups="[{ key: 'people', commands: people }]"
+      <UCommandPalette v-model="selected" nullable :autoselect="false" :groups="[{ key: 'people', commands: videos }]"
         :fuse="{ resultLimit: 6, fuseOptions: { threshold: 0.1 } }" class="w-72 h-96" />
     </div>
     <div class="flex-grow flex justify-center">
