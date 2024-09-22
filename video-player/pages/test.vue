@@ -1,28 +1,32 @@
 <script lang="ts" setup>
-import { ref } from 'vue';	
+
+
+const people = ref<Media[]>([]); // Usar ref para que Vue detecte los cambios reactivos
 
 const getAllVideos = async () => {
   try {
+
+    //ADD USE FETCH
     const response = await fetch('http://localhost:8080/allVideos');
-    const data = await response.json();
+    const data: string[] = await response.json();
     console.log(data);
+
+    let id = 0;
+    people.value = data.map((label: string) => ({ id: id++, label })); // Asignar la lista a la ref
+
+    console.log("People data:", people.value);
   } catch (error) {
     console.error(error);
   }
 };
 
-const getAllSongs = async () => {
-  try {
-    const response = await fetch('http://localhost:8080/allSongs');
-    const data = await response.json();
-    console.log(data);
-  } catch (error) {
-    console.error(error);
-  }
+const testing = () => {
+  console.log("Selected:", selected.value);
 };
 
-onMounted(() => {
-  getAllVideos();
+
+onBeforeMount(async () => {
+  await getAllVideos();
 });
 
 const items = [{
@@ -33,57 +37,22 @@ const items = [{
   icon: 'i-heroicons-musical-note'
 }];
 
-const isOpen = ref(false);
-const selectedMedia = ref('');
+interface Media {
+  id: number;
+  label: string;
+}
 
-const toggleDropdown = () => {
-  isOpen.value = !isOpen.value;
-};
+const selected = ref<Media[]>([people.value[0]]); 
 
-const mediaOptions = ref([
-  { label: 'Videos', value: 'videos' },
-  { label: 'Canciones', value: 'canciones' }
-]);
 
-const selectMedia = (option: string) => {
-  selectedMedia.value = option;
-};
+
 </script>
-
-<style scoped>
-.selected-option {
-  background-color: #d3d3d3; 
-}
-.container {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-end; 
-}
-.select-container {
-  margin-left: 16px; 
-  margin-right: 16px; 
-}
-.custom-select {
-  width: 300px; 
-}
-</style>
 
 <template>
   <div class="container mt-4">
     <div class="relative inline-block select-container">
-      <button @click="toggleDropdown" class="custom-select p-2 bg-gray-200 rounded">
-        Select an option ▼
-      </button>
-      <ul v-if="isOpen" class="absolute w-full bg-white border mt-2 rounded z-10">
-        <li 
-          v-for="option in mediaOptions" 
-          :key="option.value" 
-          @click="selectMedia(option.label)" 
-          :class="{'selected-option': selectedMedia === option.label}"
-          class="p-2 hover:bg-gray-100 cursor-pointer">
-          {{ option.label }}
-        </li>
-      </ul>
+      <UCommandPalette v-model="selected" nullable :autoselect="false" :groups="[{ key: 'people', commands: people }]"
+        :fuse="{ resultLimit: 6, fuseOptions: { threshold: 0.1 } }" class="w-72 h-96" />
     </div>
     <div class="flex-grow flex justify-center">
       <UTabs :items="items" class="w-full max-w-6xl" style="min-height: 400px;">
@@ -106,6 +75,29 @@ const selectMedia = (option: string) => {
           </div>
         </template>
       </UTabs>
+
+      <UButton @click="testing" class="mt-4">testing</UButton>
     </div>
   </div>
 </template>
+
+<style scoped>
+.selected-option {
+  background-color: #d3d3d3;
+}
+
+.container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.select-container {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.custom-select {
+  width: 300px;
+}
+</style>
