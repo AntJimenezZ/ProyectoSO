@@ -16,6 +16,7 @@
     "vue-router": "latest"
   },
   "devDependencies": {
+    "@nuxt/devtools": "^1.5.1",
     "vidstack": "^1.12.10"
   }
 }
