@@ -62,7 +62,7 @@ class BaseApp:
             video_name = request.args.get('name')
             
             base_dir = os.path.dirname(os.path.abspath(__file__))
-            file_path = os.path.join(base_dir, 'videos', "DJ MADNESS X MOB - Fess ka fe bang (acetone riddim).mp4")
+            file_path = os.path.join(base_dir, 'videos', video_name)
             print(file_path)
             if not os.path.exists(file_path):
                 abort(404, "File not found")

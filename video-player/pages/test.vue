@@ -43,6 +43,38 @@ interface Media {
 const selected = ref<Media[]>([people.value[0]]); 
 
 
+const handleSelectionChange = (newSelection: Media[]) => {
+  //@ts-ignore
+  console.log('Elemento seleccionado:', newSelection.label);
+
+
+
+  // Aquí puedes agregar cualquier lógica adicional que necesites
+};
+
+// Usar watch para observar cambios en selected
+watch(selected, (newSelection) => {
+  handleSelectionChange(newSelection);
+});
+
+const sendVideo = async () => {
+  try {
+    const response = await fetch('http://localhost:80/sendVideo', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name: selected.value[0]?.label })
+    });
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+
 </script>
 
 <template>
@@ -57,8 +89,9 @@ const selected = ref<Media[]>([people.value[0]]);
           <div class="flex justify-center items-center w-full h-full">
             <!-- Videos -->
             <div v-if="item.label === 'Videos'">
-              <video class="border-2 border-gray-500 w-full" controls>
-                <source src="http://localhost:80/sendVideo?name=DJ MADNESS X MOB - Fess ka fe bang (acetone riddim)" type="video/mp4">
+              <video key="selected" class="border-2 border-gray-500 w-full" controls>
+                <source :src="`http://localhost:80/sendVideo?name=${selected[0]?.label || ''}`"
+                  type="video/mp4">
                 Your browser does not support the video tag.
               </video>
             </div>
