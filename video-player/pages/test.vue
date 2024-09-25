@@ -41,37 +41,35 @@ interface Media {
 }
 
 const selected = ref<Media[]>([people.value[0]]); 
+const videoSrc = ref<string>('');
+const selectedMediaUrl = ref<string>('');
+const selectedMedia = ref<string>('');
 
+const handleSelectionChange = async (newSelection: Media[]) => {
 
-const handleSelectionChange = (newSelection: Media[]) => {
   //@ts-ignore
-  console.log('Elemento seleccionado:', newSelection.label);
+  const song: String = newSelection.label;
+  
+  console.log("SOOOOONG ",song)
+  const encodedMediaName = encodeURIComponent(`${song}`);
+  console.log("como se vería lo que está adentor del fehct", `http://localhost:80/sendVideo?name=${encodedMediaName}`);
+  try {
+    const response = await fetch(`http://localhost:80/sendVideo?name=${encodedMediaName}`);
+    const data = await response.blob();
+    selectedMediaUrl.value = URL.createObjectURL(data); // Crear una URL temporal para el archivo
 
-
-
-  // Aquí puedes agregar cualquier lógica adicional que necesites
+    console.log("pene vs vagina 2", selectedMediaUrl.value)
+  } catch (error) {
+    console.error('Error al cargar el video:', error);
+  }
 };
 
-// Usar watch para observar cambios en selected
+
 watch(selected, (newSelection) => {
   handleSelectionChange(newSelection);
 });
 
-const sendVideo = async () => {
-  try {
-    const response = await fetch('http://localhost:80/sendVideo', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name: selected.value[0]?.label })
-    });
-    const data = await response.json();
-    console.log(data);
-  } catch (error) {
-    console.error(error);
-  }
-};
+
 
 
 
@@ -89,16 +87,15 @@ const sendVideo = async () => {
           <div class="flex justify-center items-center w-full h-full">
             <!-- Videos -->
             <div v-if="item.label === 'Videos'">
-              <video key="selected" class="border-2 border-gray-500 w-full" controls>
-                <source :src="`http://localhost:80/sendVideo?name=${selected[0]?.label || ''}`"
-                  type="video/mp4">
+              <video :key="selectedMediaUrl" class="border-2 border-gray-500 w-full" controls>
+                <source :src="selectedMediaUrl" type="video/mp4">
                 Your browser does not support the video tag.
               </video>
             </div>
             <!-- Canciones -->
             <div v-if="item.label === 'Canciones'" class="w-full mt-40">
-              <audio class="border-2 border-gray-500 w-full" controls>
-                <source src="http://localhost:80/sendVideo" type="audio/mp3">
+              <audio :key="selectedMediaUrl" class="border-2 border-gray-500 w-full" controls>
+                <source :src="selectedMediaUrl" type="audio/mp3">
                 Your browser does not support the audio tag.
               </audio>
             </div>
@@ -106,7 +103,6 @@ const sendVideo = async () => {
         </template>
       </UTabs>
 
-      <UButton @click="testing" class="mt-4">testing</UButton>
     </div>
   </div>
 </template>
