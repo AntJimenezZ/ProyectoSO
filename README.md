@@ -29,12 +29,11 @@ To get started with the project, follow these steps:
    ```bash
      npm install
 
-**OPTIONAL:**
-3. **Build the proyect**
+3. **Build the proyect (optional)**
 ```bash
      npm run build
 ```
-4. **Run the script: Run ServersAndPage.bat**
+4. **Run the script: Run ServersAndPage.bat (optional)**
 
 
 **NOTES:**
