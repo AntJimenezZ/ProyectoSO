@@ -28,9 +28,16 @@ To get started with the project, follow these steps:
 2. **Install dependencies on video-player folder**
    ```bash
      npm install
-3. **Run the script: Run ServersAndPage.bat**
+
+3. **Build the proyect (optional)**
+```bash
+     npm run build
+```
+4. **Run the script: Run ServersAndPage.bat (optional)**
+
 
 **NOTES:**
 
 1. This proyect uses javascript,python and nginx, so, you need to install
-2. Configuration of nginx.conf its located on nginx conf.txt, so you can copy  
+2. Configuration of nginx.conf its located on nginx conf.txt, so you can copy
+3. The script, run the page with npm run preview, so, you need to run npm run build first
