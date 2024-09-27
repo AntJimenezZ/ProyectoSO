@@ -24,4 +24,4 @@ To get started with the project, follow these steps:
 1. **Clone the Repository:**
    ```bash
    git clone https://github.com/your-username/video-player-project.git
-   cd video-player-project
+2. **Run the script: Run ServersAndPage.bat**
