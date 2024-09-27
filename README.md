@@ -24,4 +24,13 @@ To get started with the project, follow these steps:
 1. **Clone the Repository:**
    ```bash
    git clone https://github.com/AntJimenezZ/ProyectoSO
-2. **Run the script: Run ServersAndPage.bat**
+
+2. **Install dependencies on video-player folder**
+   ```bash
+     npm install
+3. **Run the script: Run ServersAndPage.bat**
+
+**NOTES:**
+
+1. This proyect uses javascript,python and nginx, so, you need to install
+2. configuration of nginx.conf its located on nginx conf.txt, so you can copy  
