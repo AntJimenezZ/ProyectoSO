@@ -86,7 +86,7 @@ watch(selected, (newSelection) => {
           <div class="flex justify-center items-center w-full h-full">
             <!-- Videos -->
             <div v-if="item.label === 'Videos'">
-              <video :key="selectedMediaUrl" class="border-2 border-gray-500 w-full" controls>
+              <video :key="selectedMediaUrl" class="border-2 border-gray-500 w-full h-96" controls>
                 <source :src="selectedMediaUrl" type="video/mp4">
                 Your browser does not support the video tag.
               </video>
