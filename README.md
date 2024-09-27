@@ -33,4 +33,4 @@ To get started with the project, follow these steps:
 **NOTES:**
 
 1. This proyect uses javascript,python and nginx, so, you need to install
-2. configuration of nginx.conf its located on nginx conf.txt, so you can copy  
+2. Configuration of nginx.conf its located on nginx conf.txt, so you can copy  
