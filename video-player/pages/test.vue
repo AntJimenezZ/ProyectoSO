@@ -1,18 +1,18 @@
 <script lang="ts" setup>
 
 
-const people = ref<Media[]>([]);
+const videolist = ref<Media[]>([]);
 
 const getAllVideos = async () => {
   try {
-    const response = await fetch('http://localhost:80/allVideos');
+    const response = await fetch('http://192.168.50.19:80/allVideos');
     const data = await response.json();
     console.log(data);
 
     let id = 0;
-    people.value = data.map((label: string) => ({ id: id++, label })); 
+    videolist.value = data.map((label: string) => ({ id: id++, label })); 
 
-    console.log("People data:", people.value);
+    
   } catch (error) {
     console.error(error);
   }
@@ -40,7 +40,7 @@ interface Media {
   label: string;
 }
 
-const selected = ref<Media[]>([people.value[0]]); 
+const selected = ref<Media[]>([videolist.value[0]]); 
 const videoSrc = ref<string>('');
 const selectedMediaUrl = ref<string>('');
 const selectedMedia = ref<string>('');
@@ -50,11 +50,10 @@ const handleSelectionChange = async (newSelection: Media[]) => {
   //@ts-ignore
   const song: String = newSelection.label;
   
-  console.log("SOOOOONG ",song)
   const encodedMediaName = encodeURIComponent(`${song}`);
-  console.log("como se vería lo que está adentor del fehct", `http://localhost:80/sendVideo?name=${encodedMediaName}`);
+  
   try {
-    const response = await fetch(`http://localhost:80/sendVideo?name=${encodedMediaName}`);
+    const response = await fetch(`http://192.168.50.19:80/sendVideo?name=${encodedMediaName}`);
     const data = await response.blob();
     selectedMediaUrl.value = URL.createObjectURL(data); // Crear una URL temporal para el archivo
 
@@ -78,7 +77,7 @@ watch(selected, (newSelection) => {
 <template>
   <div class="container mt-4">
     <div class="relative inline-block select-container">
-      <UCommandPalette v-model="selected" nullable :autoselect="false" :groups="[{ key: 'people', commands: people }]"
+      <UCommandPalette v-model="selected" nullable :autoselect="false" :groups="[{ key: 'videolist', commands: videolist }]"
         :fuse="{ resultLimit: 6, fuseOptions: { threshold: 0.1 } }" class="w-72 h-96" />
     </div>
     <div class="flex-grow flex justify-center">
